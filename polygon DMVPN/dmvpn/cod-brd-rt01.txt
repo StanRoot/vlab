@@ -1,0 +1,21 @@
+interface Tunnel1
+ vrf forwarding vpn
+ ip address 10.27.211.1 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 21127
+ tunnel source 172.27.211.211
+ tunnel mode gre multipoint
+ tunnel key 21127
+ tunnel vrf wan
+ exit
+
+interface Tunnel2
+ vrf forwarding vpn
+ ip address 10.28.211.1 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 21128
+ tunnel source 172.28.211.211
+ tunnel mode gre multipoint
+ tunnel key 21128
+ tunnel vrf wan
+ exit

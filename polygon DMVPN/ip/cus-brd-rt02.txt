@@ -1,0 +1,50 @@
+hostname CUS-BRD-RT02
+
+
+vrf definition ext
+ rd 65112:20
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition wan
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition vpn
+ rd 65112:10
+ address-family ipv4
+ exit-address-family
+ exit
+
+interface GigabitEthernet0/0
+ no shutdown
+
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ description to_FW_vrf_vpn
+ no shutdown
+ vrf forwarding vpn
+ ip address 172.22.10.112 255.255.255.0
+
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ description to_FW_vrf_ext
+ no shutdown
+ vrf forwarding ext
+ ip address 172.22.20.112 255.255.255.0
+
+
+
+interface GigabitEthernet0/3
+ description to_isp_INET-BEE
+ no shutdown
+ vrf forwarding ext
+ ip address 94.47.112.112 255.255.255.0
+
+
+ip route vrf ext 0.0.0.0 0.0.0.0 94.47.112.254 name isp_inet-bee
+
+
+
+
+

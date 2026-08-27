@@ -1,0 +1,33 @@
+ip prefix-list default seq 5 permit 0.0.0.0/0
+!
+ip prefix-list google-dns seq 5 permit 8.8.8.8/32
+ipv6 ioam timestamp
+!
+route-map red_static_to_bgp_vrf_ext permit 10
+ match ip address prefix-list google-dns
+!
+route-map red_static_to_bgp_vrf_ext permit 20
+ match ip address prefix-list default
+!
+
+router bgp 199940
+ bgp router-id 1.111.111.0
+ bgp log-neighbor-changes
+ !
+ address-family ipv4 vrf ext
+  bgp router-id 1.111.111.20
+  network 10.255.111.20 mask 255.255.255.255
+  redistribute static metric 100 route-map red_static_to_bgp_vrf_ext
+  neighbor 172.22.20.101 remote-as 65101
+  neighbor 172.22.20.101 local-as 65120 no-prepend replace-as
+  neighbor 172.22.20.101 activate
+  default-information originate
+ exit-address-family
+ !
+ address-family ipv4 vrf vpn
+  bgp router-id 1.111.111.10
+  neighbor 172.22.10.101 remote-as 65101
+  neighbor 172.22.10.101 local-as 65110 no-prepend replace-as
+  neighbor 172.22.10.101 activate
+ exit-address-family
+!

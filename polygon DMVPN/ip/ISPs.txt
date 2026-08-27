@@ -1,0 +1,76 @@
+vrf definition vpn-rtk
+  address-family ipv4
+ exit-address-family
+vrf definition vpn-ttk
+  address-family ipv4
+ exit-address-family
+vrf definition inet-bee
+  address-family ipv4
+ exit-address-family
+
+
+interface GigabitEthernet0/0
+ no shutdown
+ no switchport
+ description to_CUS-RT01_L3VPN-RTK
+ vrf forwarding vpn-rtk
+ ip address 172.27.111.254 255.255.255.0
+ exit
+
+interface GigabitEthernet0/1
+ no shutdown
+ no switchport
+ description to_CUS-RT01_L3VPN-TTK
+ vrf forwarding vpn-ttk
+ ip address 172.28.111.254 255.255.255.0
+ exit
+
+interface GigabitEthernet0/2
+ no shutdown
+ no switchport
+ description to_CUS-RT02_INET-BEE
+ vrf forwarding inet-bee
+ ip address 94.47.112.254 255.255.255.0
+ exit
+
+
+interface GigabitEthernet0/3
+ no shutdown
+ no switchport
+ description to_COD-RT01_L3VPN-RTK
+ vrf forwarding vpn-rtk
+ ip address 172.27.211.254 255.255.255.0
+ exit
+
+interface GigabitEthernet1/0
+ no shutdown
+ no switchport
+ description to_COD-RT01_L3VPN-TTK
+ vrf forwarding vpn-ttk
+ ip address 172.28.211.254 255.255.255.0
+ exit
+
+interface GigabitEthernet1/1
+ no shutdown
+ no switchport
+ description to_COD-RT02_INET-BEE
+ vrf forwarding inet-bee
+ ip address 94.47.212.254 255.255.255.0
+ exit
+
+
+
+interface GigabitEthernet1/2
+ no shutdown
+ no switchport
+ description to_STATION-BUTOVO_L3VPN-RTK
+ vrf forwarding vpn-rtk
+ ip address 172.27.11.254 255.255.255.0
+ exit
+interface GigabitEthernet1/3
+ no shutdown
+ no switchport
+ description to_STATION-BUTOVO_L3VPN-TTK
+ vrf forwarding vpn-ttk
+ ip address 172.28.11.254 255.255.255.0
+ exit

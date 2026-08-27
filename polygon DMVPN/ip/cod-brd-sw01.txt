@@ -1,0 +1,22 @@
+hostname COD-BRD-SW01
+
+vlan 10 
+ name VLAN-10
+vlan 20
+ name VLAN-20
+vlan 30
+ name VLAN-30
+vlan 40
+ name VLAN-40
+vlan 50
+ name VLAN-50
+
+interface range GigabitEthernet0/0-2
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50
+
+
+
+

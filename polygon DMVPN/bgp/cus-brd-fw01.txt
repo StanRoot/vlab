@@ -1,0 +1,12 @@
+router bgp 65101
+ bgp router-id 1.101.101.101
+ bgp log-neighbor-changes
+ neighbor 172.22.10.112 remote-as 65110
+ neighbor 172.22.10.111 remote-as 65110
+ neighbor 172.22.20.112 remote-as 65120
+ !
+ address-family ipv4
+  neighbor 172.22.10.112 activate
+  neighbor 172.22.10.111 activate
+  neighbor 172.22.20.112 activate
+ exit-address-family

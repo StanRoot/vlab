@@ -1,0 +1,19 @@
+hostname CUS-BRD-FW01
+
+
+interface GigabitEthernet0/0
+ no shutdown
+
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ description to_Roures_vrf_vpn
+ no shutdown
+ ip address 172.22.10.101 255.255.255.0
+
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ description to_Roures_vrf_ext
+ no shutdown
+ ip address 172.22.20.101 255.255.255.0
+
+

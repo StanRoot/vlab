@@ -1,0 +1,11 @@
+router bgp 199940
+ bgp router-id 1.112.112.0
+ bgp log-neighbor-changes
+ !
+ address-family ipv4 vrf vpn
+  bgp router-id 1.112.112.10
+  neighbor 172.22.10.101 remote-as 65101
+  neighbor 172.22.10.101 local-as 65110 no-prepend replace-as
+  neighbor 172.22.10.101 activate
+ exit-address-family
+!

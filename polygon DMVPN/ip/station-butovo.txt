@@ -1,0 +1,17 @@
+hostname station-butovo
+
+interface GigabitEthernet0/1
+ description to_isp_L3VPN-RTK
+ no shutdown
+ ip address 172.27.11.11 255.255.255.0
+
+interface GigabitEthernet0/2
+ description to_isp_L3VPN-TTK
+ no shutdown
+ ip address 172.28.11.11 255.255.255.0
+
+
+ip route 172.27.0.0 255.255.0.0 172.27.11.254 name isp_l3vpn-rtk
+ip route 172.28.0.0 255.255.0.0 172.28.11.254 name isp_l3vpn-ttk
+
+

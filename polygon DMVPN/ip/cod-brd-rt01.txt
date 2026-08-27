@@ -1,0 +1,47 @@
+hostname COD-BRD-RT01
+
+
+vrf definition ext
+ rd 65211:20
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition wan
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition vpn
+ rd 65211:10
+ address-family ipv4
+ exit-address-family
+ exit
+
+interface GigabitEthernet0/0
+ no shutdown
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ description to_FW
+ no shutdown
+ vrf forwarding vpn
+ ip address 172.29.10.211 255.255.255.0
+
+interface GigabitEthernet0/1
+ description to_isp_L3VPN-RTK
+ no shutdown
+ vrf forwarding wan
+ ip address 172.27.211.211 255.255.255.0
+
+interface GigabitEthernet0/2
+ description to_isp_L3VPN-TTK
+ no shutdown
+ vrf forwarding wan
+ ip address 172.28.211.211 255.255.255.0
+
+
+ip route vrf wan 172.27.0.0 255.255.0.0 172.27.211.254 name isp_l3vpn-rtk
+ip route vrf wan 172.28.0.0 255.255.0.0 172.28.211.254 name isp_l3vpn-ttk
+
+
+
+
+

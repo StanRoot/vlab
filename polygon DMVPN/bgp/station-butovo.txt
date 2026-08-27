@@ -1,0 +1,10 @@
+router bgp 65000
+ bgp log-neighbor-changes
+ !
+ address-family ipv4
+  bgp router-id 11.11.11.11
+  neighbor 10.27.111.1 remote-as 65110
+  neighbor 10.27.111.1 activate
+  neighbor 10.27.211.1 remote-as 65210
+  neighbor 10.27.211.1 activate
+ exit-address-family

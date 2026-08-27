@@ -1,0 +1,49 @@
+hostname COD-BRD-RT02
+
+
+vrf definition ext
+ rd 65212:20
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition wan
+ address-family ipv4
+ exit-address-family
+ exit
+vrf definition vpn
+ rd 65212:10
+ address-family ipv4
+ exit-address-family
+ exit
+
+interface GigabitEthernet0/0
+ no shutdown
+
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ description to_FW_vrf_vpn
+ no shutdown
+ vrf forwarding vpn
+ ip address 172.29.10.212 255.255.255.0
+
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ description to_FW_vrf_ext
+ no shutdown
+ vrf forwarding ext
+ ip address 172.29.20.212 255.255.255.0
+
+
+
+interface GigabitEthernet0/3
+ description to_isp_INET-BEE
+ no shutdown
+ vrf forwarding ext
+ ip address 94.47.212.212 255.255.255.0
+
+
+ip route vrf ext 0.0.0.0 0.0.0.0 94.47.212.254 name isp_inet-bee
+ip route vrf ext 8.8.8.8 255.255.255.255 94.47.212.254
+
+
+

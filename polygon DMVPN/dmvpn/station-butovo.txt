@@ -1,0 +1,49 @@
+interface Tunnel1111
+ ip address 10.27.111.11 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 11127
+ tunnel source 172.27.11.11
+ tunnel destination 172.27.111.111
+ tunnel mode gre ip
+ tunnel key 11127
+ ip nhrp map 10.27.111.1 172.27.111.111
+ ip nhrp nhs 10.27.111.1
+ exit
+
+interface Tunnel1112
+ ip address 10.28.111.11 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 11128
+ tunnel source 172.28.11.11
+ tunnel destination 172.28.111.111
+ tunnel mode gre ip
+ tunnel key 11128
+ ip nhrp map 10.28.111.1 172.28.111.111
+ ip nhrp nhs 10.28.111.1
+ exit
+
+
+interface Tunnel2111
+ ip address 10.27.211.11 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 21127
+ tunnel source 172.27.11.11
+ tunnel destination 172.27.211.211
+ tunnel mode gre ip
+ tunnel key 21127
+ ip nhrp map 10.27.211.1 172.27.211.211
+ ip nhrp nhs 10.27.211.1
+ exit
+
+interface Tunnel2112
+ ip address 10.28.211.11 255.255.255.0
+ no ip redirects
+ ip nhrp network-id 21128
+ tunnel source 172.28.11.11
+ tunnel destination 172.28.211.211
+ tunnel mode gre ip
+ tunnel key 21128
+ ip nhrp map 10.28.211.1 172.28.211.211
+ ip nhrp nhs 10.28.211.1
+ exit
+
