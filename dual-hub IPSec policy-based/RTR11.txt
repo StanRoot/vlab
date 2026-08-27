@@ -1,0 +1,35 @@
+crypto isakmp policy 10
+ encr aes 192
+ hash md5
+ authentication pre-share
+ group 2
+
+crypto isakmp policy 20
+ encr aes
+ hash sha384
+ authentication pre-share
+ group 21
+
+crypto ipsec transform-set TRANS-SET esp-aes esp-md5-hmac 
+ mode tunnel
+
+crypto isakmp key KEY@TEST address 185.200.1.1
+crypto isakmp key KEY@TEST2 address 185.200.2.2
+
+access-list 100 permit ip 172.21.0.0 0.0.0.255 172.20.0.0 0.0.0.255 
+
+crypto map CRYPTO-MAP-RTR01 10 ipsec-isakmp 
+ set peer 185.200.1.1
+ set transform-set TRANS-SET 
+ match address 100
+crypto map CRYPTO-MAP-RTR01 20 ipsec-isakmp 
+ set peer 185.200.2.2
+ set transform-set TRANS-SET 
+ match address 100
+
+interface GigabitEthernet0/3
+ crypto map CRYPTO-MAP-RTR01
+
+
+
+

@@ -1,0 +1,41 @@
+hostname vpn7200
+!
+!--- Defines ISAKMP policy and IKE pre-shared key for !--- IKE authentication. Note that 172.16.172.53 is the !--- HSRP virtual IP address of the remote HSRP routers.
+ 
+crypto isakmp policy 1
+hash md5
+authentication pre-share
+crypto isakmp key cisco123 address 172.16.172.53
+
+!--- IKE keepalive to detect the IPSec liveness of the remote !--- VPN router. When HSRP failover happens, IKE keepalive !--- will detect the HSRP router switchover.
+
+crypto isakmp keepalive 10
+! 
+!
+crypto ipsec transform-set myset esp-des esp-md5-hmac 
+
+!--- Defines crypto map. Note that the peer address is the !--- HSRP virtual IP address of the remote HSRP routers.
+ 
+crypto map vpn 10 ipsec-isakmp 
+set peer 172.16.172.53
+set transform-set myset 
+match address 101
+!
+interface Loopback0
+ip address 20.1.1.1 255.255.255.255
+! 
+interface FastEthernet0/0
+ip address 10.48.66.66 255.255.254.0
+!
+interface FastEthernet0/1
+ip address 172.16.172.69 255.255.255.240
+crypto map vpn
+!
+ip route 10.1.1.0 255.255.255.0 172.16.172.65
+ip route 99.99.99.99 255.255.255.255 172.16.172.65
+ip route 172.16.172.48 255.255.255.240 172.16.172.65
+!
+access-list 101 permit ip 20.1.1.0 0.0.0.255 10.1.1.0 0.0.0.255
+access-list 101 permit ip 20.1.1.0 0.0.0.255 host 99.99.99.99
+!
+end

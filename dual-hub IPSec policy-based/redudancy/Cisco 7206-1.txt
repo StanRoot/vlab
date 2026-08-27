@@ -1,0 +1,19 @@
+hostname 7206-1
+
+interface Loopback0
+ip address 99.99.99.99 255.255.255.255
+
+!--- Define dynamic routing protocol. All the "VPN routes" !--- will be learned and updated dynamically from upstream HSRP !--- routers using the dynamic routing protocols.
+ 
+interface FastEthernet0/1
+ip address 10.1.1.3 255.255.255.0
+duplex full
+speed 100
+!
+router ospf 1
+log-adjacency-changes
+passive-interface Loopback0
+network 10.1.1.0 0.0.0.255 area 0
+network 99.99.99.99 0.0.0.0 area 0
+!
+end

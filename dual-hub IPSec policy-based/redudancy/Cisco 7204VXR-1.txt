@@ -1,0 +1,63 @@
+hostname 7204VXR-1
+
+!--- Defines ISAKMP policy.
+
+crypto isakmp policy 1
+hash md5
+authentication pre-share
+crypto isakmp key cisco123 address 172.16.172.69
+crypto isakmp keepalive 10
+!
+! 
+crypto ipsec transform-set myset esp-des esp-md5-hmac 
+
+!--- Defines crypto map. Note that "reverse-route" 
+!--- turns on the RRI feature.
+
+crypto map vpn 10 ipsec-isakmp 
+set peer 172.16.172.69
+set transform-set myset 
+match address 101
+reverse-route
+
+!--- Define HSRP under the interface. HSRP will track the 
+!--- internal interface as well. HSRP group name must be 
+!--- defined here and will be used for IPSec configuration. 
+!--- The "redundancy" keyword in the crypto map command 
+!--- specifies the HSRP group to which IPSec will couple. 
+!--- In normal circumstances, this router will be the HSRP 
+!--- primary router since it has higher priority than the 
+!--- other HSRP router.
+
+interface FastEthernet0/0
+ip address 172.16.172.52 255.255.255.240
+standby 1 ip 172.16.172.53
+standby 1 priority 200
+standby 1 preempt
+standby 1 name VPNHA
+standby 1 track FastEthernet0/1 150
+crypto map vpn redundancy VPNHA
+!
+interface FastEthernet0/1
+ip address 10.1.1.1 255.255.255.0
+
+!--- Define dynamic routing protocol and re-distribute static 
+!--- route. This enables dynamic routing information update 
+!--- during the HSRP/IPSec failover. All the "VPN routes" 
+!--- that are injected in the routing table by RRI as static 
+!--- routes will be redistributed to internal networks.
+
+router ospf 1
+log-adjacency-changes
+redistribute static subnets
+network 10.1.1.0 0.0.0.255 area 0
+!
+ip route 172.16.172.64 255.255.255.240 172.16.172.49
+
+!--- Defines VPN traffic. The destination IP subnet will be 
+!--- injected into the routing table as static routes by RRI.
+
+access-list 101 permit ip 10.1.1.0 0.0.0.255 20.1.1.0 0.0.0.255
+access-list 101 permit ip host 99.99.99.99 20.1.1.0 0.0.0.255
+!
+end
